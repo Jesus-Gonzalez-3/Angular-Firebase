@@ -50,7 +50,6 @@ export class AddMateriaComponent implements OnInit {
         window.location.href = window.location.origin + "/materias";
       }, 2000);
     } catch (error) {
-      console.log(error);
       this.notifyService.showError("Ha ocurrido un error al momento de realizar tu petición", "Error");
     }
 

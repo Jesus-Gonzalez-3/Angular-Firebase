@@ -40,30 +40,26 @@ export class ListEstudianteComponent implements OnInit {
       let array: Array<Materia> = [];
       this.showEstudiante.materias.forEach(element => {
         this.materias.forEach(materia => {
-          console.log(materia['key']);
-          if (element == materia.key) {
+          if (element == materia.clave) {
             array.push(materia);
           }
         });
       });
-      console.log(array);
 
       this.materias = array;
     }
   }
   filtrarResultados(filtro: string) {
-    console.log(filtro)
     this.materias = this.materias.filter(materia => {
       return filtro == materia.cuatrimestrePertenece
     });
-    console.log(this.materias);
     this.showEstudiante.materias = [];
   }
 
   agregarMaterias(valor: any) {
     let materias: Array<string> = [];
-    valor.forEach((element: { id: string; }) => {
-      materias.push(element.id);
+    valor.forEach((element: { clave: string; }) => {
+      materias.push(element.clave);
     });
     this.showEstudiante.materias = materias;
   }
@@ -95,7 +91,6 @@ export class ListEstudianteComponent implements OnInit {
 
   deleteEstudiante() {
     try {
-      console.log(this.delectedEstudiante.key);
       this.estudianteService.updateEstudiante(this.delectedEstudiante.key!, {estado:0})
         .then(() => {
           this.estudiantes = this.estudiantes.filter(estudiante => {
@@ -109,13 +104,11 @@ export class ListEstudianteComponent implements OnInit {
           this.toastr.error("Ha ocurrido un error al momento de realizar tu petición")
         });
     } catch (error) {
-      console.log(error);
     }
   }
 
   async updateEstudiante() {
     var updateEstudiante = Object.assign({}, this.showEstudiante);
-    console.log(updateEstudiante);
     await this.estudianteService
       .updateEstudiante(this.showEstudiante.key!, updateEstudiante)
       .then(() => {
@@ -126,6 +119,9 @@ export class ListEstudianteComponent implements OnInit {
         });
         //mensaje success
         this.toastr.success("Registro modificado exitosamente.");
+        setTimeout(() => {
+          window.location.href = window.location.origin + "/estudiantes";
+        }, 2000);
       })
       .catch(error => {
         this.toastr.error("Ha ocurrido un error al momento de realizar tu petición");
@@ -140,7 +136,6 @@ export class ListEstudianteComponent implements OnInit {
     ).subscribe(estudiante => {
       this.estudiantes = estudiante as [];
     }, (error) => {
-      console.log(error);
     });
   }
 
@@ -154,7 +149,6 @@ export class ListEstudianteComponent implements OnInit {
     ).subscribe(materia => {
       this.materias = materia as [];
     }, (error) => {
-      console.log(error);
     });
   }
 

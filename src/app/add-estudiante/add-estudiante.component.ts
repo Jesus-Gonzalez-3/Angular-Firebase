@@ -37,7 +37,7 @@ export class AddEstudianteComponent implements OnInit {
     ).subscribe(materia => {
       this.materias = materia as [];
     }, (error) => {
-      console.log(error);
+      this.notifyService.showError("Ha ocurrido un error al momento de realizar tu petición", "Error!")
     });
   }
 
@@ -47,35 +47,27 @@ export class AddEstudianteComponent implements OnInit {
   }
 
   filtrarResultados(filtro: string) {
-    console.log(filtro)
     this.materias = this.materias.filter(materia => {
       return filtro == materia.cuatrimestrePertenece 
     });
-    console.log(this.materias);
   }
 
   agregarMaterias(valor:any){
-    console.log(valor[0]);
     let materias : Array<string>=[];
     valor.forEach((element: { key: string; }) => {
-      console.log(element);
-      
       materias.push(element.key);
     });
     this.estudiante.materias = materias;
-    console.log(this.estudiante.materias);
   }
 
   save() {
     try {
-      console.log(this.estudiante);
       this.estudianteService.createEstudiante(this.estudiante);
       this.notifyService.showSuccess("Registro creado exitosamente !!", "Correcto");
       setTimeout(() => {
         window.location.href = window.location.origin + "/estudiantes";
       }, 2000);
     } catch (error) {
-      console.log(error);
       this.notifyService.showError("Ha ocurrido un error al momento de realizar tu petición", "Error");
     }
   }

@@ -3,6 +3,7 @@ import * as dayjs from "dayjs";
 export class Materia {
     $id!: string;
     key?: string;
+    clave?: string;
     nombre: string = "";
     totalCreditos: string = "";
     horasxsemana: string = "";

@@ -21,7 +21,6 @@ export class ListMateriaComponent implements OnInit {
   constructor(private materiaService: MateriaService, private toastr: ToastrService) { }
 
   setMateriaDetails(materia: Materia) {
-    console.log(materia);
     this.isSelected = !this.isSelected;
     if (this.isSelected) {
       this.showMateria = materia;
@@ -34,7 +33,7 @@ export class ListMateriaComponent implements OnInit {
 
   deleteMateria() {
     try {
-      this.materiaService.updateMateria(this.deletedMateria.key!,{estado:0})
+      this.materiaService.updateMateria(this.deletedMateria.key!, { estado: 0 })
         .then(() => {
           this.materias = this.materias.filter(materia => {
             return materia.$id != this.deletedMateria.$id;
@@ -43,10 +42,10 @@ export class ListMateriaComponent implements OnInit {
           this.toastr.success("Registro eliminado exitosamente.", "Correcto");
         })
         .catch(error => {
-          this.toastr.error("Ha ocurrido un error al momento de realizar tu petición")
+          this.toastr.error("Ha ocurrido un error al momento de realizar tu petición", "Error!")
         });
     } catch (error) {
-      console.log(error);
+      this.toastr.error("Ha ocurrido un error al momento de realizar tu petición", "Error!")
     }
   }
 
@@ -56,7 +55,7 @@ export class ListMateriaComponent implements OnInit {
       totalCreditos: this.showMateria.totalCreditos,
       horasxsemana: this.showMateria.horasxsemana,
       ultimaFechaAct: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-      cuatrimestrePertenece : this.showMateria.cuatrimestrePertenece,
+      cuatrimestrePertenece: this.showMateria.cuatrimestrePertenece,
     }
 
     await this.materiaService
@@ -69,6 +68,9 @@ export class ListMateriaComponent implements OnInit {
         });
         //mensaje success
         this.toastr.success("Registro modificado exitosamente.");
+        setTimeout(() => {
+          window.location.href = window.location.origin + "/materias";
+        }, 2000);
       })
       .catch(error => {
         this.toastr.error("Ha ocurrido un error al momento de realizar tu petición");
@@ -83,7 +85,7 @@ export class ListMateriaComponent implements OnInit {
     ).subscribe(materia => {
       this.materias = materia as [];
     }, (error) => {
-      console.log(error);
+      this.toastr.error("Ha ocurrido un error al momento de realizar tu petición", "Error!")
     });
   }
   ngOnInit(): void {
