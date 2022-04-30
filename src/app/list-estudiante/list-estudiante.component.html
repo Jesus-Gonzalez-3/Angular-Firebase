@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let estudiante of estudiantes">
-                        <td *ngIf="estudiante.estado == '1'" hidden>{{estudiante.$key}}</td>
+                        <td *ngIf="estudiante.estado == '1'" hidden>{{estudiante.$id}}</td>
                         <td *ngIf="estudiante.estado == '1'">{{estudiante.nombre + " "+ estudiante.apellidoP+ " "
                             +estudiante.apellidoM}}</td>
                         <td *ngIf="estudiante.estado == '1'">{{estudiante.matricula}}</td>
@@ -34,14 +34,14 @@
                             <button type="button" class="btn btn-secondary" (click)="setEstudianteDetails2(estudiante)"
                                 data-toggle="modal" data-target="#modelIdShow">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
-                                {{estudiante.$key}}
+                                {{estudiante.$id}}
                             </button>
                             &nbsp;
                             &nbsp;
                             <button type="button" class="btn btn-primary" (click)="setEstudianteDetails(estudiante)"
                                 data-toggle="modal" data-target="#modelId">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
-                                {{estudiante.$key}}
+                                {{estudiante.$id}}
                             </button>
                             &nbsp;
                             &nbsp;
@@ -103,7 +103,7 @@
 
                         <div class="form-group" hidden>
                             <label for="id">Id:</label>
-                            <input type="text" class="form-control" id="id" required [(ngModel)]="showEstudiante.$key"
+                            <input type="text" class="form-control" id="id" required [(ngModel)]="showEstudiante.$id"
                                 name="id" disabled>
                         </div>
                         <div class="row">
@@ -148,7 +148,7 @@
                             <div class="form-group col-lg-8">
                                 <label for="materias">Materias a Cursas</label>
                                 <ng-select [items]="materias" id="cmbMaterias" bindLabel="nombre"
-                                    class="form-control select" style="width: 100%;" bindValue="$key"
+                                    class="form-control select" style="width: 100%;" bindValue="$id"
                                     labelForId="nombre" [multiple]="true" placeholder="Seleccione las Materias a Cursar"
                                     clearAllText="Clear" formControlName="materias" [ngModel]="showEstudiante.materias"
                                     (change)="agregarMaterias($event)">
@@ -159,7 +159,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
                                 class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
-                        <button type="submit" class="btn btn-success" data-dismiss="modal"> <i class="fa fa-floppy-o"
+                        <button type="submit" class="btn btn-success"> <i class="fa fa-floppy-o"
                                 aria-hidden="true"></i>
                             Actualizar</button>
                     </div>
@@ -185,7 +185,7 @@
 
                         <div class="form-group" hidden>
                             <label for="id">Id:</label>
-                            <input type="text" class="form-control" id="id" required [(ngModel)]="showEstudiante.$key"
+                            <input type="text" class="form-control" id="id" required [(ngModel)]="showEstudiante.$id"
                                 name="id" disabled>
                         </div>
                         <div class="row">

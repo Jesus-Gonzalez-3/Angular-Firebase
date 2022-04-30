@@ -40,8 +40,8 @@ export class ListEstudianteComponent implements OnInit {
       let array: Array<Materia> = [];
       this.showEstudiante.materias.forEach(element => {
         this.materias.forEach(materia => {
-          console.log(materia['clave']);
-          if (element == materia.clave) {
+          console.log(materia['key']);
+          if (element == materia.key) {
             array.push(materia);
           }
         });
@@ -57,6 +57,7 @@ export class ListEstudianteComponent implements OnInit {
       return filtro == materia.cuatrimestrePertenece
     });
     console.log(this.materias);
+    this.showEstudiante.materias = [];
   }
 
   agregarMaterias(valor: any) {
@@ -94,10 +95,11 @@ export class ListEstudianteComponent implements OnInit {
 
   deleteEstudiante() {
     try {
-      this.estudianteService.deleteEstudiante(this.delectedEstudiante.$key)
+      console.log(this.delectedEstudiante.key);
+      this.estudianteService.updateEstudiante(this.delectedEstudiante.key!, {estado:0})
         .then(() => {
           this.estudiantes = this.estudiantes.filter(estudiante => {
-            return estudiante.$key != this.delectedEstudiante.$key;
+            return estudiante.$id != this.delectedEstudiante.$id;
           })
           //mensaje success
           this.toastr.success("Registro eliminado exitosamente.", "Correcto");
@@ -113,12 +115,12 @@ export class ListEstudianteComponent implements OnInit {
 
   async updateEstudiante() {
     var updateEstudiante = Object.assign({}, this.showEstudiante);
-
+    console.log(updateEstudiante);
     await this.estudianteService
-      .updateEstudiante(this.showEstudiante.$key, updateEstudiante)
+      .updateEstudiante(this.showEstudiante.key!, updateEstudiante)
       .then(() => {
         this.estudiantes.map(x => {
-          if (x.$key == this.showEstudiante.$key) {
+          if (x.$id == this.showEstudiante.$id) {
             x = this.showEstudiante;
           }
         });
@@ -132,7 +134,7 @@ export class ListEstudianteComponent implements OnInit {
 
   async retrieveAllEstudiantes() {
     this.estudianteService.getEstudianteList().snapshotChanges().pipe(
-      map(changes => changes.map(c => ({ id: c.payload.doc.id, ...c.payload.doc.data()})
+      map(changes => changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data()})
       )
       )
     ).subscribe(estudiante => {

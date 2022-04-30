@@ -1,7 +1,8 @@
 import * as dayjs from "dayjs";
 
 export class Estudiante {
-    $key!: string ;
+    $id!: string;
+    key?: string;
     nombre!: string;
     apellidoP!: string;
     apellidoM!: string;

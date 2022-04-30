@@ -34,7 +34,7 @@ export class ListMateriaComponent implements OnInit {
 
   deleteMateria() {
     try {
-      this.materiaService.deleteMateria(this.deletedMateria.$id)
+      this.materiaService.updateMateria(this.deletedMateria.key!,{estado:0})
         .then(() => {
           this.materias = this.materias.filter(materia => {
             return materia.$id != this.deletedMateria.$id;
@@ -60,7 +60,7 @@ export class ListMateriaComponent implements OnInit {
     }
 
     await this.materiaService
-      .updateMateria(this.showMateria.$id, updatedMateria)
+      .updateMateria(this.showMateria.key!, updatedMateria)
       .then(() => {
         this.materias.map(x => {
           if (x.$id == this.showMateria.$id) {
