@@ -1,0 +1,156 @@
+<div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-center">Materias</h3>
+        </div>
+        <div class="card-body">
+            <a type="button" style="font-size:10px" class="btn btn-primary justify-content-end text-white"
+                style="float: right; clear: right;" href="/addMateria">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar Materia
+            </a>
+            <br>
+            <br>
+            <table id="tableMatrias" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th hidden>Id</th>
+                        <th>Nombre Materia</th>
+                        <th>Creditos a Obtener</th>
+                        <th>Horas a la semana </th>
+                        <th>Cuatrimestre en el que se cursa</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let materia of materias">
+                        <td *ngIf="materia.estado == 1" hidden>{{materia.$key}}</td>
+                        <td *ngIf="materia.estado == 1">{{materia.nombre}}</td>
+                        <td *ngIf="materia.estado == 1">{{materia.totalCreditos}} creditos</td>
+
+                        <td *ngIf="materia.estado == 1">{{materia.horasxsemana}} horas a la semana </td>
+                        <td *ngIf="materia.estado == 1">{{materia.cuatrimestrePertenece}} cuatrimestre</td>
+                        <td *ngIf="materia.estado == 1">
+                            <button type="button" class="btn btn-primary" (click)="setMateriaDetails(materia)"
+                                data-toggle="modal" data-target="#modelId">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                {{materia.$key}}
+                            </button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"
+                                (click)=prepareDeleteMateria(materia)> <i class="fa fa-times-circle"
+                                    aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delete-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p class="card-text">
+                    Estas seguro que quieres eliminar el registro?
+                </p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times-circle" aria-hidden="true"></i> Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="deleteMateria()" data-dismiss="modal"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showMateria">
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Actualizar Materia</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form (ngSubmit)="updateMateria()">
+                    <div class="modal-body">
+
+                        <!-- ID -->
+                        <div class="form-group" hidden>
+                            <label for="id">Id:</label>
+                            <input type="numer" class="form-control" id="id" required [(ngModel)]="showMateria.$key"
+                                name="id" disabled>
+                        </div>
+                        <!-- First name -->
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" class="form-control" placeholder="Ingrese el Nombre de la Materia"
+                                id="nombre" required [(ngModel)]="showMateria.nombre" name="nombre">
+                        </div>
+                        <!-- Last name -->
+                        <div class="form-group">
+                            <label for="horasxsemana">Horas a la semana:</label>
+                            <input type="text" class="form-control" placeholder="Horas a la semana que se cursa"
+                                id="horasxsemana" required [(ngModel)]="showMateria.horasxsemana" name="horasxsemana">
+                        </div>
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="address">Creditos:</label>
+                            <input type="text" class="form-control" placeholder="Creditos a obtener de la materia"
+                                id="totalCreditos" required [(ngModel)]="showMateria.totalCreditos"
+                                name="totalCreditos">
+                        </div>
+
+                        <!-- Age -->
+                        <div class="form-group">
+                            <label for="cuatrimestrePertenece">Cuatrimestre que se cursa: </label>
+                            <input type="number" class="form-control" placeholder="Cuatrimestre al que pertenece"
+                                id="cuatrimestrePertenece" required [(ngModel)]="showMateria.cuatrimestrePertenece"
+                                name="cuatrimestrePertenece">
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
+                                class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+                        <button type="submit" class="btn btn-success" data-dismiss="modal"> <i class="fa fa-floppy-o"
+                                aria-hidden="true"></i>
+                            Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script>
+    let pathname = window.location.pathname;
+    if (pathname == "") {
+        $(".nav .nav-item a:first").addClass("active");
+        $(".nav .nav-item a:last").removeClass("active");
+    } else if (pathname == "/materia") {
+        $(".nav .nav-item a:last").addClass("active");
+        $(".nav .nav-item a:first").removeClass("active");
+    }
+    alert("ok");
+
+</script>
