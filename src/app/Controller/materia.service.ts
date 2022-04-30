@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import * as dayjs from 'dayjs';
 import { Materia } from '../Models/materia';
-
+export interface Item { name: string; }
 @Injectable({
   providedIn: 'root'
 })
@@ -10,29 +10,25 @@ export class MateriaService {
 
   private dbPath = '/materiales';
 
-  materialesRef: AngularFireList<Materia>;
+  materialesRef: AngularFirestoreCollection<Materia>;
 
-  constructor(private db: AngularFireDatabase) {
-    this.materialesRef = db.list(this.dbPath);
+  constructor(private db: AngularFirestore) {
+    this.materialesRef = db.collection(this.dbPath);
   }
 
   createMateria(materia: Materia): void {
-    this.materialesRef.push(materia);
+    this.materialesRef.add({...materia});
   }
 
   updateMateria(key: string, value: any): Promise<void> {
-    return this.materialesRef.update(key, value);
+    return this.materialesRef.doc(key).update(value);
   }
 
-  deleteMateria(key: string, value:any): Promise<void> {
-    return this.materialesRef.set(key,value);
+  deleteMateria(key: string): Promise<void> {
+    return this.materialesRef.doc(key).delete();
   }
 
-  getMaterialesList(): AngularFireList<Materia> {
+  getMaterialesList(): AngularFirestoreCollection<Materia> {
     return this.materialesRef;
-  }
-
-  deleteAll(): Promise<void> {
-    return this.materialesRef.remove();
   }
 }

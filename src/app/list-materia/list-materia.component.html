@@ -10,7 +10,7 @@
             </a>
             <br>
             <br>
-            <table id="tableMatrias" class="display" style="width:100%">
+            <table id="tableMatrias" class="table table-bordered table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th hidden>Id</th>
@@ -18,22 +18,22 @@
                         <th>Creditos a Obtener</th>
                         <th>Horas a la semana </th>
                         <th>Cuatrimestre en el que se cursa</th>
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let materia of materias">
-                        <td *ngIf="materia.estado == 1" hidden>{{materia.$key}}</td>
-                        <td *ngIf="materia.estado == 1">{{materia.nombre}}</td>
-                        <td *ngIf="materia.estado == 1">{{materia.totalCreditos}} creditos</td>
+                        <td *ngIf="materia.estado == '1'" hidden>{{materia.$id}}</td>
+                        <td *ngIf="materia.estado == '1'">{{materia.nombre}}</td>
+                        <td *ngIf="materia.estado == '1'">{{materia.totalCreditos}} creditos</td>
 
-                        <td *ngIf="materia.estado == 1">{{materia.horasxsemana}} horas a la semana </td>
-                        <td *ngIf="materia.estado == 1">{{materia.cuatrimestrePertenece}} cuatrimestre</td>
-                        <td *ngIf="materia.estado == 1">
+                        <td *ngIf="materia.estado == '1'">{{materia.horasxsemana}} horas a la semana </td>
+                        <td *ngIf="materia.estado == '1'">{{materia.cuatrimestrePertenece}} cuatrimestre</td>
+                        <td *ngIf="materia.estado == '1'">
                             <button type="button" class="btn btn-primary" (click)="setMateriaDetails(materia)"
                                 data-toggle="modal" data-target="#modelId">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
-                                {{materia.$key}}
+                                {{materia.$id}}
                             </button>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"
                                 (click)=prepareDeleteMateria(materia)> <i class="fa fa-times-circle"
@@ -91,7 +91,7 @@
                         <!-- ID -->
                         <div class="form-group" hidden>
                             <label for="id">Id:</label>
-                            <input type="numer" class="form-control" id="id" required [(ngModel)]="showMateria.$key"
+                            <input type="numer" class="form-control" id="id" required [(ngModel)]="showMateria.$id"
                                 name="id" disabled>
                         </div>
                         <!-- First name -->
@@ -128,7 +128,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
                                 class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
-                        <button type="submit" class="btn btn-success" data-dismiss="modal"> <i class="fa fa-floppy-o"
+                        <button type="submit" class="btn btn-success"> <i class="fa fa-floppy-o"
                                 aria-hidden="true"></i>
                             Actualizar</button>
                     </div>

@@ -1,1 +1,65 @@
-<p>add-estudiante works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h2 class="card-title text-dark"> Crear Estudiante</h2>
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="firstname">Nombre Estudiante:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el nombre de la materia"
+                                    id="nombre" required [(ngModel)]="estudiante.nombre" name="nombre">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="lastname">Apellido Paterno:</label>
+                                <input type="text" class="form-control" placeholder="Apellido Paterno" id="apellidoP"
+                                    required [(ngModel)]="estudiante.apellidoP" name="apellidoP">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="lastname">Apellido Materno:</label>
+                                <input type="text" class="form-control" placeholder="Apellido Materno" id="apellidoM"
+                                    required [(ngModel)]="estudiante.apellidoM" name="apellidoM">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="age">Matricula:</label>
+                                <input type="number" class="form-control" placeholder="Matricula" id="matricula"
+                                    required [(ngModel)]="estudiante.matricula" name="matricula">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="address">Edad:</label>
+                                <input type="number" class="form-control" placeholder="Edad del Estudiante" id="edad"
+                                    required [(ngModel)]="estudiante.edad" name="edad">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="age">Cuatrimestre que cursa:</label>
+                                <input type="number" class="form-control"
+                                    placeholder="A que cuatrimestre pertenece la materia?" id="cuatrimestreCurso"
+                                    required [(ngModel)]="estudiante.cuatrimestreCurso" name="cuatrimestreCurso"
+                                    (change)="filtrarResultados(estudiante.cuatrimestreCurso)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="form-group col-lg-6">
+                                <label for="materias">Materias a Cursas</label>
+                                <ng-select [items]="materias" id="cmbMaterias" bindLabel="nombre"
+                                    class="form-control select" style="width: 100%;" bindValue="$key"
+                                    labelForId="nombre" [multiple]="true" placeholder="Seleccione las Materias a Cursar"
+                                    clearAllText="Clear" formControlName="materias" [ngModel]=""
+                                    (change)="agregarMaterias($event)">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success"> <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                            Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

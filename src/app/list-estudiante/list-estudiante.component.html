@@ -1,1 +1,271 @@
-<p>list-estudiante works!</p>
+<div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-center">Estudiantes</h3>
+        </div>
+        <div class="card-body">
+            <a type="button" style="font-size:10px" class="btn btn-primary justify-content-end text-white"
+                style="float: right; clear: right;" href="/addEstudiante">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar Estudiante
+            </a>
+            <br>
+            <br>
+            <table id="tableMatrias" class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th hidden>Id</th>
+                        <th>Nombre del Estudiante</th>
+                        <th>Matricula</th>
+                        <th>Edad </th>
+                        <th>Cuatrimestre que cursa</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let estudiante of estudiantes">
+                        <td *ngIf="estudiante.estado == '1'" hidden>{{estudiante.$key}}</td>
+                        <td *ngIf="estudiante.estado == '1'">{{estudiante.nombre + " "+ estudiante.apellidoP+ " "
+                            +estudiante.apellidoM}}</td>
+                        <td *ngIf="estudiante.estado == '1'">{{estudiante.matricula}}</td>
+
+                        <td *ngIf="estudiante.estado == '1'">{{estudiante.edad}} años</td>
+                        <td *ngIf="estudiante.estado == '1'">{{estudiante.cuatrimestreCurso}} cuatrimestre</td>
+                        <td *ngIf="estudiante.estado == '1'" style="width: 18%;">
+                            <button type="button" class="btn btn-secondary" (click)="setEstudianteDetails2(estudiante)"
+                                data-toggle="modal" data-target="#modelIdShow">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                {{estudiante.$key}}
+                            </button>
+                            &nbsp;
+                            &nbsp;
+                            <button type="button" class="btn btn-primary" (click)="setEstudianteDetails(estudiante)"
+                                data-toggle="modal" data-target="#modelId">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                {{estudiante.$key}}
+                            </button>
+                            &nbsp;
+                            &nbsp;
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"
+                                (click)=prepareDeleteEstudiante(estudiante)> <i class="fa fa-times-circle"
+                                    aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delete-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p class="card-text">
+                    Estas seguro que quieres eliminar el registro?
+                </p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times-circle"
+                        aria-hidden="true"></i> Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="deleteEstudiante()" data-dismiss="modal"><i
+                        class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showEstudiante">
+    <div class="modal fade bd-example-modal-lg" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Actualizar Estudiante</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form (ngSubmit)="updateEstudiante()">
+                    <div class="modal-body">
+
+                        <div class="form-group" hidden>
+                            <label for="id">Id:</label>
+                            <input type="text" class="form-control" id="id" required [(ngModel)]="showEstudiante.$key"
+                                name="id" disabled>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el Nombre de la Materia"
+                                    id="nombre" required [(ngModel)]="showEstudiante.nombre" name="nombre">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Apellido Paterno:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el Apellido Paterno"
+                                    id="apellidoP" required [(ngModel)]="showEstudiante.apellidoP" name="apellidoP">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Apellido Materno:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el Apellido Materno"
+                                    id="apellidoM" required [(ngModel)]="showEstudiante.apellidoM" name="apellidoM">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Matricula:</label>
+                                <input type="number" class="form-control"
+                                    placeholder="Ingrese la matricula del estudiante" id="matricula" min="0" required
+                                    [(ngModel)]="showEstudiante.matricula" name="matricula">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Edad:</label>
+                                <input type="number" class="form-control" placeholder="Ingrese la edad" id="edad"
+                                    min="0" required [(ngModel)]="showEstudiante.edad" name="edad">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="horasxsemana">Cuatrimestre que cursa:</label>
+                                <input type="number" class="form-control" placeholder="Cuatrimestre que esta cursando"
+                                    id="cuatrimestreCurso" required [(ngModel)]="showEstudiante.cuatrimestreCurso"
+                                    name="cuatrimestreCurso"
+                                    (change)="filtrarResultados(showEstudiante.cuatrimestreCurso)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="form-group col-lg-8">
+                                <label for="materias">Materias a Cursas</label>
+                                <ng-select [items]="materias" id="cmbMaterias" bindLabel="nombre"
+                                    class="form-control select" style="width: 100%;" bindValue="$key"
+                                    labelForId="nombre" [multiple]="true" placeholder="Seleccione las Materias a Cursar"
+                                    clearAllText="Clear" formControlName="materias" [ngModel]="showEstudiante.materias"
+                                    (change)="agregarMaterias($event)">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
+                                class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+                        <button type="submit" class="btn btn-success" data-dismiss="modal"> <i class="fa fa-floppy-o"
+                                aria-hidden="true"></i>
+                            Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showEstudiante" id="canvas">
+    <div class="modal fade bd-example-modal-lg" id="modelIdShow" tabindex="-1" role="dialog"
+        aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Detalle Estudiante</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form (ngSubmit)="imprimirListado()">
+                    <div class="modal-body">
+
+                        <div class="form-group" hidden>
+                            <label for="id">Id:</label>
+                            <input type="text" class="form-control" id="id" required [(ngModel)]="showEstudiante.$key"
+                                name="id" disabled>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el Nombre de la Materia"
+                                    id="nombre" required [(ngModel)]="showEstudiante.nombre" name="nombre"
+                                    disabled="true">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Apellido Paterno:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el Apellido Paterno"
+                                    id="apellidoP" required [(ngModel)]="showEstudiante.apellidoP" name="apellidoP"
+                                    disabled="true">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Apellido Materno:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el Apellido Materno"
+                                    id="apellidoM" required [(ngModel)]="showEstudiante.apellidoM" name="apellidoM"
+                                    disabled="true">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Matricula:</label>
+                                <input type="number" class="form-control"
+                                    placeholder="Ingrese la matricula del estudiante" id="matricula" min="0" required
+                                    [(ngModel)]="showEstudiante.matricula" name="matricula" disabled="true">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="nombre">Edad:</label>
+                                <input type="number" class="form-control" placeholder="Ingrese la edad" id="edad"
+                                    min="0" required [(ngModel)]="showEstudiante.edad" name="edad" disabled="true">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="horasxsemana">Cuatrimestre que cursa:</label>
+                                <input type="number" class="form-control" placeholder="Cuatrimestre que esta cursando"
+                                    id="cuatrimestreCurso" required [(ngModel)]="showEstudiante.cuatrimestreCurso"
+                                    name="cuatrimestreCurso" disabled="true">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="form-group col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 class="text-title">Materias a Cursar</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group" *ngFor="let materia of materias">
+                                            <li class="list-group-item">{{materia.nombre}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
+                                class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+                        <button type="submit" class="btn btn-success"> <i class="fa fa-print" aria-hidden="true"></i>
+                            Imprimir listado de materias</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let pathname = window.location.pathname;
+    if (pathname == "") {
+        $(".nav .nav-item a:first").addClass("active");
+        $(".nav .nav-item a:last").removeClass("active");
+    } else if (pathname == "/materia") {
+        $(".nav .nav-item a:last").addClass("active");
+        $(".nav .nav-item a:first").removeClass("active");
+    }
+    alert("ok");
+
+</script>

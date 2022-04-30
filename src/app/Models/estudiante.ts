@@ -5,13 +5,13 @@ export class Estudiante {
     nombre!: string;
     apellidoP!: string;
     apellidoM!: string;
-    matricula!: number;
-    edad!: number;
+    matricula!: string;
+    edad!: string;
     materias!: Array<string>;
-    cuatrimestreCurso!: number;
+    cuatrimestreCurso!: string;
     fechaRegistro: string;
     ultimaFechaAct!: string;
-    estado: number = 1;
+    estado: string = "1";
 
     constructor() {
         let fecha = new Date();

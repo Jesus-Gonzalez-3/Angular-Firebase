@@ -24,8 +24,8 @@ export class EstudianteService {
     return this.estudiantesRef.update(key, value);
   }
 
-  deleteEstudiante(key: string, value:any): Promise<void> {
-    return this.estudiantesRef.update(key,value);
+  deleteEstudiante(key: string): Promise<void> {
+    return this.estudiantesRef.remove(key);
   }
 
   getEstudianteList(): AngularFireList<Estudiante> {

@@ -34,14 +34,13 @@ export class ListMateriaComponent implements OnInit {
 
   deleteMateria() {
     try {
-      this.materiaService.deleteMateria(this.deletedMateria.$key, this.deletedMateria.estado=0)
+      this.materiaService.deleteMateria(this.deletedMateria.$id)
         .then(() => {
           this.materias = this.materias.filter(materia => {
-            return materia.$key != this.deletedMateria.$key;
+            return materia.$id != this.deletedMateria.$id;
           })
           //mensaje success
           this.toastr.success("Registro eliminado exitosamente.", "Correcto");
-
         })
         .catch(error => {
           this.toastr.error("Ha ocurrido un error al momento de realizar tu petición")
@@ -52,13 +51,19 @@ export class ListMateriaComponent implements OnInit {
   }
 
   async updateMateria() {
-    var updatedMateria = Object.assign({}, this.showMateria);
+    var updatedMateria = {
+      nombre: this.showMateria.nombre,
+      totalCreditos: this.showMateria.totalCreditos,
+      horasxsemana: this.showMateria.horasxsemana,
+      ultimaFechaAct: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      cuatrimestrePertenece : this.showMateria.cuatrimestrePertenece,
+    }
 
     await this.materiaService
-      .updateMateria(this.showMateria.$key, updatedMateria)
+      .updateMateria(this.showMateria.$id, updatedMateria)
       .then(() => {
         this.materias.map(x => {
-          if (x.$key == this.showMateria.$key) {
+          if (x.$id == this.showMateria.$id) {
             x = this.showMateria;
           }
         });
@@ -71,11 +76,9 @@ export class ListMateriaComponent implements OnInit {
   }
 
   async retrieveAllMaterias() {
-    await this.materiaService.getMaterialesList().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ key: c.payload.key, ...c.payload.val() })
-        )
+    this.materiaService.getMaterialesList().snapshotChanges().pipe(
+      map(changes => changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() })
+      )
       )
     ).subscribe(materia => {
       this.materias = materia as [];
