@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import * as dayjs from 'dayjs';
 import { Estudiante } from '../Models/estudiante';
 
@@ -10,29 +10,25 @@ export class EstudianteService {
 
   private dbPath = '/estudiantes';
 
-  estudiantesRef: AngularFireList<Estudiante>;
+  estudiantesRef: AngularFirestoreCollection<Estudiante>;
 
-  constructor(private db: AngularFireDatabase) {
-    this.estudiantesRef = db.list(this.dbPath);
+  constructor(private db: AngularFirestore) {
+    this.estudiantesRef = db.collection(this.dbPath);
   }
 
   createEstudiante(estudiante: Estudiante): void {
-    this.estudiantesRef.push(estudiante);
+    this.estudiantesRef.add({...estudiante});
   }
 
   updateEstudiante(key: string, value: any): Promise<void> {
-    return this.estudiantesRef.update(key, value);
+    return this.estudiantesRef.doc(key).update({...value});
   }
 
   deleteEstudiante(key: string): Promise<void> {
-    return this.estudiantesRef.remove(key);
+    return this.estudiantesRef.doc(key).delete();
   }
 
-  getEstudianteList(): AngularFireList<Estudiante> {
+  getEstudianteList(): AngularFirestoreCollection<Estudiante> {
     return this.estudiantesRef;
-  }
-
-  deleteAll(): Promise<void> {
-    return this.estudiantesRef.remove();
   }
 }

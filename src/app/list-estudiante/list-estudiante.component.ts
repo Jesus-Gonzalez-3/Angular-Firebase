@@ -61,8 +61,8 @@ export class ListEstudianteComponent implements OnInit {
 
   agregarMaterias(valor: any) {
     let materias: Array<string> = [];
-    valor.forEach((element: { key: string; }) => {
-      materias.push(element.key);
+    valor.forEach((element: { id: string; }) => {
+      materias.push(element.id);
     });
     this.showEstudiante.materias = materias;
   }
@@ -132,7 +132,7 @@ export class ListEstudianteComponent implements OnInit {
 
   async retrieveAllEstudiantes() {
     this.estudianteService.getEstudianteList().snapshotChanges().pipe(
-      map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() })
+      map(changes => changes.map(c => ({ id: c.payload.doc.id, ...c.payload.doc.data()})
       )
       )
     ).subscribe(estudiante => {

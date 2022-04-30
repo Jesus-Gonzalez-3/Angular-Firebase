@@ -57,10 +57,10 @@ export class AddEstudianteComponent implements OnInit {
   agregarMaterias(valor:any){
     console.log(valor[0]);
     let materias : Array<string>=[];
-    valor.forEach((element: { id: string; }) => {
+    valor.forEach((element: { key: string; }) => {
       console.log(element);
       
-      materias.push(element.id);
+      materias.push(element.key);
     });
     this.estudiante.materias = materias;
     console.log(this.estudiante.materias);
